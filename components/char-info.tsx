@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -14,18 +14,23 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from './ui/separator';
 import { Book } from 'lucide-react';
-import type { CharInfo } from '@/models/char-info';
 import { useSheetStore } from '@/store/sheet-store';
 
 export function CharInfo() {
-  const { sheet, persistSheet } = useSheetStore();
-  const [charInfo, setCharInfo] = useState<CharInfo>({
-    name: sheet.info.name,
-    age: sheet.info.age,
-    height: sheet.info.height,
-    weight: sheet.info.weight,
-    history: sheet.info.history,
-  });
+  const { sheet, updateSheetInfo } = useSheetStore();
+  const [charInfo, setCharInfo] = useState(sheet.info);
+
+  const handleChange = (key: keyof typeof charInfo, value: string | number) => {
+    setCharInfo((prev) => ({ ...prev, [key]: value }));
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateSheetInfo(charInfo);
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, [charInfo, updateSheetInfo]);
 
   return (
     <section className="mt-4 flex items-center justify-between rounded-lg border-2 p-2">
@@ -34,7 +39,7 @@ export function CharInfo() {
         <span className="h-full max-w-32 truncate text-xl font-bold">{charInfo.name}</span>
       </div>
       <div className="flex items-center">
-        <Separator className="mx-2 h-2" orientation="vertical"></Separator>
+        <Separator className="mx-2 h-2" orientation="vertical" />
         <Drawer>
           <DrawerTrigger asChild>
             <Button variant="outline">
@@ -47,10 +52,7 @@ export function CharInfo() {
             </DrawerHeader>
             <div className="flex flex-col gap-2 p-4">
               <Label>Name:</Label>
-              <Input
-                value={charInfo.name}
-                onChange={(e) => setCharInfo({ ...charInfo, name: e.target.value })}
-              ></Input>
+              <Input value={charInfo.name} onChange={(e) => handleChange('name', e.target.value)} />
             </div>
             <section className="flex gap-4 p-4">
               <div className="flex flex-col gap-2">
@@ -58,42 +60,35 @@ export function CharInfo() {
                 <Input
                   value={charInfo.age}
                   type="number"
-                  onChange={(e) => setCharInfo({ ...charInfo, age: Number(e.target.value) })}
-                ></Input>
+                  onChange={(e) => handleChange('age', Number(e.target.value))}
+                />
               </div>
               <div className="flex flex-col gap-2">
                 <Label>Height:</Label>
                 <Input
                   value={charInfo.height}
                   type="number"
-                  onChange={(e) => setCharInfo({ ...charInfo, height: Number(e.target.value) })}
-                ></Input>
+                  onChange={(e) => handleChange('height', Number(e.target.value))}
+                />
               </div>
               <div className="flex flex-col gap-2">
-                <Label>Weight</Label>
+                <Label>Weight:</Label>
                 <Input
                   value={charInfo.weight}
                   type="number"
-                  onChange={(e) => setCharInfo({ ...charInfo, weight: Number(e.target.value) })}
-                ></Input>
+                  onChange={(e) => handleChange('weight', Number(e.target.value))}
+                />
               </div>
             </section>
             <div className="flex flex-col gap-2 p-4">
-              <Label>History</Label>
+              <Label>History:</Label>
               <Textarea
                 value={charInfo.history}
-                onChange={(e) => setCharInfo({ ...charInfo, history: e.target.value })}
+                onChange={(e) => handleChange('history', e.target.value)}
                 className="max-h-40"
-              ></Textarea>
+              />
             </div>
             <DrawerFooter>
-              <Button
-                onClick={() => {
-                  persistSheet({ ...sheet, info: charInfo });
-                }}
-              >
-                Save
-              </Button>
               <DrawerClose asChild>
                 <Button variant="outline">Close</Button>
               </DrawerClose>

@@ -19,7 +19,7 @@ export default function Class() {
       <Separator></Separator>
       <section className="flex flex-col gap-4">
         <CharSpecs></CharSpecs>
-        <CharSpells></CharSpells>
+        <CharSpells dndClass={String(dndClass)}></CharSpells>
       </section>
     </main>
   );

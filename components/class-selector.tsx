@@ -6,17 +6,13 @@ import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { useSheetStore } from '@/store/sheet-store';
 
 export function ClassSelector() {
   const [dndClass, setDnDClass] = useState('');
 
-  const { fetchSpells } = useSheetStore();
   const router = useRouter();
 
   const createSheet = () => {
-    fetchSpells(dndClass);
-
     if (dndClass) router.push(`/sheet/${dndClass}`);
     else toast.error('Class is not selected!');
   };

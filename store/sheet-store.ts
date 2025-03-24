@@ -11,13 +11,14 @@ import { baseAttributes } from '@/utils/baseAttributes';
 
 interface SheetStore {
   sheet: CharSheet;
+  updateSheetInfo: (newSheetInfo: CharInfo) => void;
+  updateSheetSpecs: (newSheetSpecs: CharSpecs) => void;
   persistSheet: (newSheet: CharSheet) => void;
-  fetchSheet: () => void;
   getSheet: () => CharSheet;
   selectSpell: (spellIndex: string) => void;
   fetchSpell: (spellIndex: string) => Promise<Spell>;
+  fetchSheet: () => void;
   fetchSpells: (charClass: string) => void;
-  // startupSpellSlots: (charClass: string) => void;
 }
 
 type fetchSpellsResponse = { level: number; name: string; index: string };
@@ -44,6 +45,16 @@ export const useSheetStore = create<SheetStore>()(
         classSpells: [],
         selectedSpells: [],
       },
+    },
+    updateSheetInfo: (newInfo: CharInfo) => {
+      set((state) => {
+        state.sheet.info = newInfo;
+      });
+    },
+    updateSheetSpecs: (newSpecs: CharSpecs) => {
+      set((state) => {
+        state.sheet.specs = newSpecs;
+      });
     },
     persistSheet: (newSheet: CharSheet) => {
       set({ sheet: newSheet });
@@ -114,13 +125,12 @@ export const useSheetStore = create<SheetStore>()(
         if (selectedSpell) {
           state.sheet.spells?.selectedSpells?.push(selectedSpell);
           localStorage.setItem('DnD:Sheet', JSON.stringify(state.sheet));
-          toast('Spell <b>' + selectedSpell.name + '</b> selected!');
+          toast('Spell [' + selectedSpell.name + '] selected!');
         } else toast.error('Selected Spell not found!');
       });
     },
     fetchSpell: async (spellIndex: string) => {
       const res = await axios.get(`https://www.dnd5eapi.co/api/2014/spells/${spellIndex}`);
-      console.log(res);
       return <Spell>{
         desc: res.data.desc.join(' '),
         name: res.data.name,
@@ -148,41 +158,5 @@ export const useSheetStore = create<SheetStore>()(
         ritual: res.data.ritual,
       };
     },
-    // startupSpellSlots: (charClass: string) => {
-    //   if (charClass === 'Warlock') {
-    //     set((state) => {
-    //       if (!state.sheet.spells) {
-    //         state.sheet.spells = { spellLevels: [], selectedSpells: [], classSpells: [] };
-    //       }
-
-    //       state.sheet.spells!.spellLevels = [
-    //         <SpellLevel>{
-    //           level: 1,
-    //           knownSpellsCount: 2,
-    //           knownSpells: [{ isUsed: false }, { isUsed: false }],
-    //         },
-    //       ];
-    //     });
-    //   }
-    // },
-    // updateSpellSlotsBasedOnLevel: () => {
-    //   set((state) => {
-    //     const { level } = state.sheet.specs;
-
-    //     const currentSpellData = warlockSpellTable.find((entry) => entry.level === level);
-    //     if (!currentSpellData) return;
-
-    //     state.sheet.spells!.spellLevels = [
-    //       {
-    //         level: currentSpellData.slotLevel,
-    //         knownSpellsCount: currentSpellData.knownSpells,
-    //         knownSpells: Array.from({ length: currentSpellData.slots }, () => ({
-    //           isUsed: false,
-    //           selectedSpells: [],
-    //         })),
-    //       },
-    //     ];
-    //   });
-    // },
   })),
 );
