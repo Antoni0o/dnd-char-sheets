@@ -46,24 +46,22 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
           <Button
             variant="outline"
             size="sm"
-            className="flex justify-start w-62"
+            className="flex justify-start w-6/8"
             onClick={async () => await handleFetchSpell()}
           >
-            <div className="flex">
-              <div className="mr-2 flex items-center gap-2">
-                <Label className="text-md">Level: </Label>
-                <span>{spell.level}</span>
-              </div>
-              <span className="mr-2 font-normal">|</span>
-              <span className={`truncate ${isSelectable ? 'max-w-40' : 'w-full'}`}>
-                {spell.name}
-              </span>
+            <div className="mr-2 flex items-center gap-2">
+              <Label className="text-md">Level: </Label>
+              <span>{spell.level}</span>
             </div>
+            <span className="mr-2 font-normal">|</span>
+            <span className='text-start w-[40%] truncate'>
+              {spell.name}
+            </span>
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-96">
+        <PopoverContent className="overflow-auto w-80">
           {!isSpellLoading ? (
-            <div className="flex justify-between">
+            <div className="flex flex-col gap-4">
               <div className="flex flex-col justify-start">
                 <div className="flex items-center gap-2">
                   <Label className="text-md">Duration: </Label>
@@ -73,36 +71,6 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
                   <Label className="text-md">Range: </Label>
                   <span>{selectedSpell?.range}</span>
                 </div>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button size="sm" className="mt-4">
-                      More Info
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{selectedSpell?.name}</DialogTitle>
-                      <DialogDescription className="max-h-60 overflow-y-auto text-justify">
-                        <b>Description: </b>
-                        {selectedSpell?.desc && selectedSpell.desc.trim() !== ''
-                          ? selectedSpell.desc
-                          : 'No description available.'}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <span>
-                      <b>Components: </b>
-                      {selectedSpell?.components}
-                    </span>
-                    <span>
-                      <b>Material: </b>
-                      {selectedSpell?.material || 'No Material found.'}
-                    </span>
-                    <span>
-                      <b>Higher Level: </b>
-                      {selectedSpell?.higherLevel || 'No Higher Level found.'}
-                    </span>
-                  </DialogContent>
-                </Dialog>
               </div>
               <div className='flex flex-col'>
                 <Label className='text-md'>Damage/Level:</Label>
@@ -119,6 +87,36 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
                   <>No damage by level</>
                 )}
               </div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="sm" className="mt-4">
+                    More Info
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{selectedSpell?.name}</DialogTitle>
+                    <DialogDescription className="max-h-60 overflow-y-auto text-justify">
+                      <b>Description: </b>
+                      {selectedSpell?.desc && selectedSpell.desc.trim() !== ''
+                        ? selectedSpell.desc
+                        : 'No description available.'}
+                    </DialogDescription>
+                  </DialogHeader>
+                  <span>
+                    <b>Components: </b>
+                    {selectedSpell?.components}
+                  </span>
+                  <span>
+                    <b>Material: </b>
+                    {selectedSpell?.material || 'No Material found.'}
+                  </span>
+                  <span>
+                    <b>Higher Level: </b>
+                    {selectedSpell?.higherLevel || 'No Higher Level found.'}
+                  </span>
+                </DialogContent>
+              </Dialog>
             </div>
           ) : (
             <Loading message="Spell content is loading..." />
