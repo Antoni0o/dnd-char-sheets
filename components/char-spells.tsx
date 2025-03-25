@@ -28,12 +28,12 @@ export function CharSpells({ dndClass }: CharSpellsProps) {
     <section className="flex flex-col justify-between gap-2 rounded-lg border-2 p-4">
       <h2 className="text-xl font-bold">Spells</h2>
 
-      {sheet.spells?.selectedSpells || sheet.spells!.selectedSpells!.length > 0 ? (
+      {sheet.spells?.selectedSpells && sheet.spells!.selectedSpells!.length > 0 ? (
         sheet.spells?.selectedSpells!.map((spellOfSpellList) => {
           return <SpellDetails key={spellOfSpellList.index} spell={spellOfSpellList} />;
         })
       ) : (
-        <>No spells!</>
+        <>No Spell selected.</>
       )}
 
       <Drawer>

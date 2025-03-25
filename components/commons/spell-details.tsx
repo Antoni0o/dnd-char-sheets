@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
+import { Trash } from 'lucide-react';
 
 type SpellDetailsProps = {
   spell: Spell;
@@ -20,9 +21,23 @@ type SpellDetailsProps = {
 };
 
 export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps) {
-  const { fetchSpell, selectSpell } = useSheetStore();
+  const { fetchSpell, selectSpell, deselectSpell } = useSheetStore();
   const [isSpellLoading, setIsSpellLoading] = useState<boolean>(true);
   const [selectedSpell, setSelectedSpell] = useState<Spell>();
+
+  async function handleFetchSpell() {
+    setIsSpellLoading(true);
+    try {
+      const fetchedSpell = await fetchSpell(spell.index);
+      setSelectedSpell(fetchedSpell);
+    } catch (error) {
+      console.error('Failed to fetch spell:', error);
+    } finally {
+      setTimeout(() => {
+        setIsSpellLoading(false);
+      }, 1000);
+    }
+  }
 
   return (
     <div className="flex w-full cursor-pointer items-center justify-between rounded-lg border-2 p-2 font-bold focus:border-4">
@@ -31,20 +46,8 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
           <Button
             variant="outline"
             size="sm"
-            className={`flex justify-start ${isSelectable ? 'w-62' : 'w-full'}`}
-            onClick={async () => {
-              setIsSpellLoading(true);
-              try {
-                const fetchedSpell = await fetchSpell(spell.index);
-                setSelectedSpell(fetchedSpell);
-              } catch (error) {
-                console.error('Failed to fetch spell:', error);
-              } finally {
-                setTimeout(() => {
-                  setIsSpellLoading(false);
-                }, 1000);
-              }
-            }}
+            className="flex justify-start w-62"
+            onClick={async () => await handleFetchSpell()}
           >
             <div className="flex">
               <div className="mr-2 flex items-center gap-2">
@@ -79,7 +82,7 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle>{selectedSpell?.name}</DialogTitle>
-                      <DialogDescription className="max-h-60 overflow-y-scroll text-justify">
+                      <DialogDescription className="max-h-60 overflow-y-auto text-justify">
                         <b>Description: </b>
                         {selectedSpell?.desc && selectedSpell.desc.trim() !== ''
                           ? selectedSpell.desc
@@ -92,18 +95,18 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
                     </span>
                     <span>
                       <b>Material: </b>
-                      {selectedSpell?.material}
+                      {selectedSpell?.material || 'No Material found.'}
                     </span>
                     <span>
                       <b>Higher Level: </b>
-                      {selectedSpell?.higherLevel || 'No Higher Level Found'}
+                      {selectedSpell?.higherLevel || 'No Higher Level found.'}
                     </span>
                   </DialogContent>
                 </Dialog>
               </div>
-              <div>
-                <Label className="text-lg">Damage:</Label>
-                {selectedSpell?.damage ? (
+              <div className='flex flex-col'>
+                <Label className='text-md'>Damage/Level:</Label>
+                {selectedSpell?.damage && (selectedSpell?.damage?.damageByLevel.length && selectedSpell?.damage?.damageByLevel.length > 0) ? (
                   selectedSpell?.damage?.damageByLevel.map((damage) => {
                     return (
                       <div key={damage.level}>
@@ -113,7 +116,7 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
                     );
                   })
                 ) : (
-                  <>No damage provided</>
+                  <>No damage by level</>
                 )}
               </div>
             </div>
@@ -122,11 +125,15 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
           )}
         </PopoverContent>
       </Popover>
-      {isSelectable && (
-        <Button size="sm" onClick={() => selectSpell(spell.index)}>
-          Select
-        </Button>
-      )}
-    </div>
+      {
+        isSelectable ? (
+          <Button size="sm" onClick={() => selectSpell(spell.index)}>
+            Select
+          </Button>
+        ) : (
+          <Button variant='destructive' size='sm' onClick={() => deselectSpell(spell.index)}><Trash /></Button>
+        )
+      }
+    </div >
   );
 }

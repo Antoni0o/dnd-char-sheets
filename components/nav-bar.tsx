@@ -16,7 +16,6 @@ export function NavBar() {
         <ThemeSwitch></ThemeSwitch>
         <Button
           onClick={() => {
-            console.log(sheet);
             persistSheet(sheet);
           }}
         >

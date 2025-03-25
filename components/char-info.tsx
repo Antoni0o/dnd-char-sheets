@@ -54,26 +54,29 @@ export function CharInfo() {
               <Label>Name:</Label>
               <Input value={charInfo.name} onChange={(e) => handleChange('name', e.target.value)} />
             </div>
-            <section className="flex gap-4 p-4">
-              <div className="flex flex-col gap-2">
-                <Label>Age:</Label>
+            <section className="flex justify-around gap-4 p-4">
+              <div className="flex flex-col items-end gap-2">
+                <Label>Age</Label>
                 <Input
+                  className="number-input-sm"
                   value={charInfo.age}
                   type="number"
                   onChange={(e) => handleChange('age', Number(e.target.value))}
                 />
               </div>
-              <div className="flex flex-col gap-2">
-                <Label>Height:</Label>
+              <div className="flex flex-col items-end gap-2">
+                <Label>Height</Label>
                 <Input
+                  className="number-input-sm"
                   value={charInfo.height}
                   type="number"
                   onChange={(e) => handleChange('height', Number(e.target.value))}
                 />
               </div>
-              <div className="flex flex-col gap-2">
-                <Label>Weight:</Label>
+              <div className="flex flex-col items-end gap-2">
+                <Label>Weight</Label>
                 <Input
+                  className="number-input-sm"
                   value={charInfo.weight}
                   type="number"
                   onChange={(e) => handleChange('weight', Number(e.target.value))}

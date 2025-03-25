@@ -10,6 +10,8 @@ export type Attribute = {
   type: string;
   value: number;
   modifier: number;
+  savingThrow: number;
+  check: number;
   skills: Array<Skill>;
 };
 

@@ -31,11 +31,11 @@ export function CharSpecs() {
         const updatedAttributes = prevState.attributes.map((attr) =>
           attr.type === attributeType
             ? {
-                ...attr,
-                skills: attr.skills.map((sk) =>
-                  sk.type === skillType ? { ...sk, value: updatedValue } : sk,
-                ),
-              }
+              ...attr,
+              skills: attr.skills.map((sk) =>
+                sk.type === skillType ? { ...sk, value: updatedValue } : sk,
+              ),
+            }
             : attr,
         );
         return { ...prevState, attributes: updatedAttributes };
@@ -43,10 +43,10 @@ export function CharSpecs() {
         const updatedAttributes = prevState.attributes.map((attr) =>
           attr.type === attributeType
             ? {
-                ...attr,
-                value: updatedValue,
-                modifier: Math.floor((updatedValue - 10) / 2),
-              }
+              ...attr,
+              value: updatedValue,
+              modifier: Math.floor((updatedValue - 10) / 2),
+            }
             : attr,
         );
         return { ...prevState, attributes: updatedAttributes };
@@ -72,7 +72,7 @@ export function CharSpecs() {
             <div className="flex flex-col gap-2">
               <Label>Level</Label>
               <Input
-                className="h-full w-30 rounded-none border-x-0 border-t-0 border-b-2 !bg-transparent pt-0 text-right text-5xl font-bold duration-500 focus:rounded-lg focus:outline-none"
+                className="number-input-md"
                 type="number"
                 value={charSpecs.level}
                 onChange={(e) => setCharSpecs({ ...charSpecs, level: Number(e.target.value) })}
@@ -111,7 +111,7 @@ export function CharSpecs() {
                           </div>
                           <Input
                             key={attribute.type}
-                            className="h-full w-30 rounded-none border-x-0 border-t-0 border-b-2 !bg-transparent pt-0 text-right text-5xl font-bold duration-500 focus:rounded-lg focus:outline-none"
+                            className="number-input-md"
                             type="number"
                             value={attribute.value}
                             onChange={(e) =>
@@ -126,7 +126,7 @@ export function CharSpecs() {
                                 {skill.value > 0 ? <CircleDotDashed /> : <CircleDashed />}
                                 <Input
                                   key={skill.type}
-                                  className="h-full w-20 rounded-none border-x-0 border-t-0 border-b-2 !bg-transparent text-right text-2xl font-bold duration-500 focus:rounded-lg focus:outline-none"
+                                  className="number-input-sm"
                                   type="number"
                                   value={skill.value}
                                   onChange={(e) =>
@@ -162,7 +162,7 @@ export function CharSpecs() {
             <div className="flex flex-col items-end gap-2">
               <Label>CA</Label>
               <Input
-                className="h-full w-16 rounded-none border-x-0 border-t-0 border-b-2 !bg-transparent p-0 text-right text-2xl font-bold duration-500 focus:rounded-lg focus:outline-none"
+                className="number-input-sm"
                 type="number"
                 value={charSpecs.ca}
                 onChange={(e) => setCharSpecs({ ...charSpecs, ca: Number(e.target.value) })}
@@ -171,7 +171,7 @@ export function CharSpecs() {
             <div className="flex flex-col items-end gap-2">
               <Label>HP</Label>
               <Input
-                className="h-full w-16 rounded-none border-x-0 border-t-0 border-b-2 !bg-transparent p-0 text-right text-2xl font-bold duration-500 focus:rounded-lg focus:outline-none"
+                className="number-input-sm"
                 type="number"
                 value={charSpecs.hp}
                 onChange={(e) => setCharSpecs({ ...charSpecs, hp: Number(e.target.value) })}
@@ -180,7 +180,7 @@ export function CharSpecs() {
             <div className="flex flex-col items-end gap-2">
               <Label>Proficiency</Label>
               <Input
-                className="h-full w-16 rounded-none border-x-0 border-t-0 border-b-2 !bg-transparent p-0 text-right text-2xl font-bold duration-500 focus:rounded-lg focus:outline-none"
+                className="number-input-sm"
                 type="number"
                 value={charSpecs.proficiency}
                 onChange={(e) =>

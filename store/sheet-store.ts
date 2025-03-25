@@ -16,6 +16,7 @@ interface SheetStore {
   persistSheet: (newSheet: CharSheet) => void;
   getSheet: () => CharSheet;
   selectSpell: (spellIndex: string) => void;
+  deselectSpell: (spellIndex: string) => void;
   fetchSpell: (spellIndex: string) => Promise<Spell>;
   fetchSheet: () => void;
   fetchSpells: (charClass: string) => void;
@@ -129,6 +130,20 @@ export const useSheetStore = create<SheetStore>()(
         } else toast.error('Selected Spell not found!');
       });
     },
+    deselectSpell: (spellIndex: string) => {
+      set((state) => {
+        const deselectedSpellIndex = state.sheet.spells?.selectedSpells?.findIndex(
+          (spell) => spell.index === spellIndex,
+        );
+
+        if (deselectedSpellIndex !== undefined && deselectedSpellIndex > -1) {
+          const splicedRes = state.sheet.spells?.selectedSpells?.splice(deselectedSpellIndex, 1);
+          const deselectedSpell = splicedRes![0];
+          localStorage.setItem('DnD:Sheet', JSON.stringify(state.sheet));
+          toast.warning('Spell [' + deselectedSpell.name + '] deselected!');
+        } else toast.error('Spell not found!');
+      })
+    },
     fetchSpell: async (spellIndex: string) => {
       const res = await axios.get(`https://www.dnd5eapi.co/api/2014/spells/${spellIndex}`);
       return <Spell>{
@@ -140,16 +155,16 @@ export const useSheetStore = create<SheetStore>()(
         concentration: res.data.concentration,
         damage: res.data.damage
           ? <Damage>{
-              damageByLevel: res.data.damage.damage_at_character_level
-                ? Object.entries(res.data.damage.damage_at_character_level).map(
-                    ([level, value]) => ({
-                      level: Number(level),
-                      value,
-                    }),
-                  )
-                : [],
-              damageType: res.data.damage.damage_type.name,
-            }
+            damageByLevel: res.data.damage.damage_at_character_level
+              ? Object.entries(res.data.damage.damage_at_character_level).map(
+                ([level, value]) => ({
+                  level: Number(level),
+                  value,
+                }),
+              )
+              : [],
+            damageType: res.data.damage.damage_type.name,
+          }
           : undefined,
         duration: res.data.duration,
         higherLevel: res.data.higher_level.join(),
