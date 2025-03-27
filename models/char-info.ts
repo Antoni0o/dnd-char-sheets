@@ -3,5 +3,8 @@ export type CharInfo = {
   age: number;
   height: number;
   weight: number;
+  race: string;
+  antecedent: string;
+  trend: string;
   history: string;
 };

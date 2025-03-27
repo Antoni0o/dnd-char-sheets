@@ -44,7 +44,7 @@ export function CharSpecs() {
           attr.type === attributeType
             ? {
               ...attr,
-              value: updatedValue,
+              [field]: updatedValue,
               modifier: Math.floor((updatedValue - 10) / 2),
             }
             : attr,
@@ -120,6 +120,22 @@ export function CharSpecs() {
                           />
                         </div>
                         <div>
+                          <section className="flex items-center gap-2">
+                            {attribute.savingThrow > 0 ? <CircleDotDashed /> : <CircleDashed />}
+                            <Input
+                              className="number-input-sm"
+                              type="number"
+                              value={attribute.savingThrow}
+                              onChange={(e) =>
+                                handleChange(
+                                  Number(e.target.value),
+                                  'savingThrow',
+                                  attribute.type,
+                                )
+                              }
+                            />
+                            <Label>Saving Throw</Label>
+                          </section>
                           {attribute.skills.map((skill) => {
                             return (
                               <section className="flex items-center gap-2" key={skill.type}>

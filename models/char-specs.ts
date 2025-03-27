@@ -11,7 +11,6 @@ export type Attribute = {
   value: number;
   modifier: number;
   savingThrow: number;
-  check: number;
   skills: Array<Skill>;
 };
 
