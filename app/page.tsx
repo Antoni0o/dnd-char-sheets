@@ -5,10 +5,10 @@ import { useSheetStore } from '@/store/sheet-store';
 import { useEffect } from 'react';
 
 export default function Home() {
-  const { fetchSheet } = useSheetStore();
+  const { getSheet } = useSheetStore();
 
   useEffect(() => {
-    fetchSheet();
+    getSheet();
   }, []);
 
   return (

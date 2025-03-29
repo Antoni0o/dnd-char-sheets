@@ -1,4 +1,4 @@
-import { Spell } from '@/models/char-spells';
+import { Spell } from '@/models/sheet/char-spells';
 import { Button } from '../ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { useSheetStore } from '@/store/sheet-store';
@@ -46,7 +46,7 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
           <Button
             variant="outline"
             size="sm"
-            className="flex justify-start w-6/8"
+            className="flex w-6/8 justify-start"
             onClick={async () => await handleFetchSpell()}
           >
             <div className="mr-2 flex items-center gap-2">
@@ -54,12 +54,10 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
               <span>{spell.level}</span>
             </div>
             <span className="mr-2 font-normal">|</span>
-            <span className='text-start w-[40%] truncate'>
-              {spell.name}
-            </span>
+            <span className="w-[40%] truncate text-start">{spell.name}</span>
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="overflow-auto w-80">
+        <PopoverContent className="w-80 overflow-auto">
           {!isSpellLoading ? (
             <div className="flex flex-col gap-4">
               <div className="flex flex-col justify-start">
@@ -72,9 +70,11 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
                   <span>{selectedSpell?.range}</span>
                 </div>
               </div>
-              <div className='flex flex-col'>
-                <Label className='text-md'>Damage/Level:</Label>
-                {selectedSpell?.damage && (selectedSpell?.damage?.damageByLevel.length && selectedSpell?.damage?.damageByLevel.length > 0) ? (
+              <div className="flex flex-col">
+                <Label className="text-md">Damage/Level:</Label>
+                {selectedSpell?.damage &&
+                selectedSpell?.damage?.damageByLevel.length &&
+                selectedSpell?.damage?.damageByLevel.length > 0 ? (
                   selectedSpell?.damage?.damageByLevel.map((damage) => {
                     return (
                       <div key={damage.level}>
@@ -123,15 +123,15 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
           )}
         </PopoverContent>
       </Popover>
-      {
-        isSelectable ? (
-          <Button size="sm" onClick={() => selectSpell(spell.index)}>
-            Select
-          </Button>
-        ) : (
-          <Button variant='destructive' size='sm' onClick={() => deselectSpell(spell.index)}><Trash /></Button>
-        )
-      }
-    </div >
+      {isSelectable ? (
+        <Button size="sm" onClick={() => selectSpell(spell.index)}>
+          Select
+        </Button>
+      ) : (
+        <Button variant="destructive" size="sm" onClick={() => deselectSpell(spell.index)}>
+          <Trash />
+        </Button>
+      )}
+    </div>
   );
 }

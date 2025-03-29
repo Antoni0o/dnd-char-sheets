@@ -1,6 +1,6 @@
-import { CharInfo } from './char-info';
-import { CharSpecs } from './char-specs';
-import { CharSpells } from './char-spells';
+import { CharInfo } from './sheet/char-info';
+import { CharSpecs } from './sheet/char-specs';
+import { CharSpells } from './sheet/char-spells';
 
 export type CharSheet = {
   info: CharInfo;

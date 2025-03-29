@@ -47,7 +47,7 @@ export function CharSpells({ dndClass }: CharSpellsProps) {
 
               setTimeout(() => {
                 setIsSpellLoading(false);
-              }, 500);
+              }, 1000);
             }}
           >
             <Book /> More Spells
