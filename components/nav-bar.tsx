@@ -1,13 +1,9 @@
 'use client';
 
-import { Save } from 'lucide-react';
 import { ThemeSwitch } from './commons/theme-switch';
-import { Button } from './ui/button';
-import { useSheetStore } from '@/store/sheet-store';
 import { useRouter } from 'next/navigation';
 
 export function NavBar() {
-  const { sheet, persistSheet } = useSheetStore();
   const router = useRouter();
 
   return (
@@ -23,13 +19,6 @@ export function NavBar() {
 
       <div className="flex gap-4">
         <ThemeSwitch></ThemeSwitch>
-        <Button
-          onClick={() => {
-            persistSheet(sheet);
-          }}
-        >
-          <Save />
-        </Button>
       </div>
     </nav>
   );
