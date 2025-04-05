@@ -84,9 +84,9 @@ export function CharSpecs() {
 
                   const newProficiency =
                     newLevel > 0 && newLevel <= 20
-                      ? (charClass!.proficiencyByLevel[newLevel] ?? 0)
+                      ? charClass!.proficiencyByLevel[newLevel - 1]
                       : newLevel > 20
-                        ? (charClass!.proficiencyByLevel[20] ?? 0)
+                        ? charClass!.proficiencyByLevel[19]
                         : 0;
 
                   setCharSpecs((prev) => ({
