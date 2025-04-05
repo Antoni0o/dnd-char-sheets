@@ -63,7 +63,7 @@ export function CharSpecs() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       updateSheetSpecs(charSpecs);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timeout);
   }, [charSpecs, updateSheetSpecs]);
