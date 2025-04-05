@@ -49,7 +49,7 @@ export function CharSpecs() {
             ? {
                 ...attr,
                 [field]: updatedValue,
-                modifier: Math.floor((updatedValue - 10) / 2),
+                modifier: field === 'value' ? Math.floor((updatedValue - 10) / 2) : attr.modifier,
               }
             : attr,
         );
