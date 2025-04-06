@@ -124,7 +124,7 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
         </PopoverContent>
       </Popover>
       {isSelectable ? (
-        <Button size="sm" onClick={() => selectSpell(spell.index)}>
+        <Button size="sm" disabled={spell.isSelected} onClick={() => selectSpell(spell.index)}>
           Select
         </Button>
       ) : (

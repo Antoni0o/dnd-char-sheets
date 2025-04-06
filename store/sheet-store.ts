@@ -95,6 +95,8 @@ export const useSheetStore = create<SheetStore>()(
 
           if (selectedSpell) {
             state.sheet.spells?.selectedSpells?.push(selectedSpell);
+
+            selectedSpell.isSelected = true;
             toast.success(`Spell [${selectedSpell.name}] selected!`);
           } else {
             toast.error('Selected Spell not found!');
@@ -107,12 +109,17 @@ export const useSheetStore = create<SheetStore>()(
           const deselectedSpellIndex = state.sheet.spells?.selectedSpells?.findIndex(
             (spell) => spell.index === spellIndex,
           );
+          const deselectedClassSpell = state.sheet.spells?.classSpells.find(
+            (spell) => spell.index === spellIndex,
+          );
 
-          if (deselectedSpellIndex !== -1) {
+          if (deselectedSpellIndex !== -1 && deselectedClassSpell) {
             const [deselectedSpell] = state.sheet.spells!.selectedSpells!.splice(
               deselectedSpellIndex!,
               1,
             );
+
+            deselectedClassSpell.isSelected = false;
             toast.warning(`Spell [${deselectedSpell.name}] deselected!`);
           } else {
             toast.error('Spell not found!');

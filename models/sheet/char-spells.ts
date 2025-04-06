@@ -28,6 +28,7 @@ export type Spell = {
   concentration?: boolean;
   duration?: string;
   damage?: Damage;
+  isSelected?: boolean;
 };
 
 export type Damage = {
