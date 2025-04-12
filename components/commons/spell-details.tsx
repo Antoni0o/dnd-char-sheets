@@ -1,7 +1,7 @@
-import { Spell } from '@/models/sheet/char-spells';
+import { Spell } from '@/src/models/sheet/char-spells';
 import { Button } from '../ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { useSheetStore } from '@/store/sheet-store';
+import { useSheetStore } from '@/src/store/sheet-store';
 import { useState } from 'react';
 import { Loading } from './loading';
 import { Label } from '../ui/label';

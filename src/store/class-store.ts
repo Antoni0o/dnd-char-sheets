@@ -1,4 +1,4 @@
-import CharClass from '@/models/char-class';
+import CharClass from '@/src/models/char-class';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { createJSONStorage, persist } from 'zustand/middleware';

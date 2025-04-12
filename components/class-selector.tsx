@@ -6,8 +6,8 @@ import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { baseClasses } from '@/store/baseValues/baseClasses';
-import { useClassStore } from '@/store/class-store';
+import { baseClasses } from '@/src/store/baseValues/baseClasses';
+import { useClassStore } from '@/src/store/class-store';
 
 export function ClassSelector() {
   const [dndClass, setDnDClass] = useState('');

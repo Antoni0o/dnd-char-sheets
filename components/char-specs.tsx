@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { CircleDashed, CircleDotDashed, ScrollText } from 'lucide-react';
-import type { CharSpecs } from '@/models/sheet/char-specs';
+import type { CharSpecs } from '@/src/models/sheet/char-specs';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -16,8 +16,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { useSheetStore } from '@/store/sheet-store';
-import { useClassStore } from '@/store/class-store';
+import { useSheetStore } from '@/src/store/sheet-store';
+import { useClassStore } from '@/src/store/class-store';
 
 export function CharSpecs() {
   const { sheet, updateSheetSpecs } = useSheetStore();

@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from './ui/separator';
 import { Book } from 'lucide-react';
-import { useSheetStore } from '@/store/sheet-store';
+import { useSheetStore } from '@/src/store/sheet-store';
 
 export function CharInfo() {
   const { sheet, updateSheetInfo } = useSheetStore();
@@ -51,13 +51,16 @@ export function CharInfo() {
               <DrawerTitle className="text-2xl">Character Info</DrawerTitle>
             </DrawerHeader>
 
-            <section className='overflow-y-auto p-4 gap-2 flex flex-col'>
+            <section className="flex flex-col gap-2 overflow-y-auto p-4">
               <div className="flex flex-col gap-2">
                 <Label>Name:</Label>
-                <Input value={charInfo.name} onChange={(e) => handleChange('name', e.target.value)} />
+                <Input
+                  value={charInfo.name}
+                  onChange={(e) => handleChange('name', e.target.value)}
+                />
               </div>
 
-              <Separator className='my-4' />
+              <Separator className="my-4" />
 
               <section className="flex justify-around gap-4">
                 <div className="flex flex-col items-end gap-2">
@@ -89,10 +92,10 @@ export function CharInfo() {
                 </div>
               </section>
 
-              <Separator className='my-4' />
+              <Separator className="my-4" />
 
-              <div className='flex flex-col gap-4'>
-                <div className='flex flex-col gap-2'>
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
                   <Label>Race:</Label>
                   <Input
                     value={charInfo.race}
@@ -100,7 +103,7 @@ export function CharInfo() {
                     onChange={(e) => handleChange('race', e.target.value)}
                   ></Input>
                 </div>
-                <div className='flex flex-col gap-2'>
+                <div className="flex flex-col gap-2">
                   <Label>Antecedent:</Label>
                   <Input
                     value={charInfo.antecedent}
@@ -108,7 +111,7 @@ export function CharInfo() {
                     onChange={(e) => handleChange('antecedent', e.target.value)}
                   ></Input>
                 </div>
-                <div className='flex flex-col gap-2'>
+                <div className="flex flex-col gap-2">
                   <Label>Trend:</Label>
                   <Input
                     value={charInfo.trend}
@@ -118,7 +121,7 @@ export function CharInfo() {
                 </div>
               </div>
 
-              <Separator className='my-4' />
+              <Separator className="my-4" />
 
               <div className="flex flex-col gap-2">
                 <Label>History:</Label>

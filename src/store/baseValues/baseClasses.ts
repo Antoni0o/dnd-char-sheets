@@ -1,4 +1,4 @@
-import CharClass from '@/models/char-class';
+import CharClass from '@/src/models/char-class';
 
 const defaultProficiencyByLevel: Array<number> = [
   2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6,

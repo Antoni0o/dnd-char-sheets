@@ -1,7 +1,7 @@
 'use client';
 
 import { ClassSelector } from '@/components/class-selector';
-import { useSheetStore } from '@/store/sheet-store';
+import { useSheetStore } from '@/src/store/sheet-store';
 import { useEffect } from 'react';
 
 export default function Home() {

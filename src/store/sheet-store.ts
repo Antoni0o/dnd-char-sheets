@@ -4,11 +4,11 @@ import { immer } from 'zustand/middleware/immer';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import axios from 'axios';
 
-import { CharInfo } from '@/models/sheet/char-info';
-import { CharSheet } from '@/models/char-sheet';
-import { CharSpecs } from '@/models/sheet/char-specs';
-import { Spell } from '@/models/sheet/char-spells';
-import { baseAttributes } from '@/store/baseValues/baseAttributes';
+import { CharInfo } from '@/src/models/sheet/char-info';
+import { CharSheet } from '@/src/models/char-sheet';
+import { CharSpecs } from '@/src/models/sheet/char-specs';
+import { Spell } from '@/src/models/sheet/char-spells';
+import { baseAttributes } from '@/src/store/baseValues/baseAttributes';
 
 interface SheetStore {
   sheet: CharSheet;

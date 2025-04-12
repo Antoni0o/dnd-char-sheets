@@ -5,8 +5,8 @@ import { CharSpecs } from '@/components/char-specs';
 import { CharSpells } from '@/components/char-spells';
 import { Loading } from '@/components/commons/loading';
 import { Separator } from '@/components/ui/separator';
-import CharClass from '@/models/char-class';
-import { useClassStore } from '@/store/class-store';
+import CharClass from '@/src/models/char-class';
+import { useClassStore } from '@/src/store/class-store';
 import { useEffect, useState } from 'react';
 
 export default function Class() {

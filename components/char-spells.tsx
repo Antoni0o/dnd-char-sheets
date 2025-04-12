@@ -1,6 +1,6 @@
 'use client';
 
-import { useSheetStore } from '@/store/sheet-store';
+import { useSheetStore } from '@/src/store/sheet-store';
 import {
   Drawer,
   DrawerClose,

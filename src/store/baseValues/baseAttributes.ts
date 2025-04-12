@@ -1,4 +1,4 @@
-import { Attribute } from '@/models/sheet/char-specs';
+import { Attribute } from '@/src/models/sheet/char-specs';
 
 export const baseAttributes: Array<Attribute> = [
   {
