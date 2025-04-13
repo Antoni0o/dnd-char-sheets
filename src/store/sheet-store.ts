@@ -1,34 +1,35 @@
 import { toast } from 'sonner';
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import axios from 'axios';
 
-import { CharInfo } from '@/src/models/sheet/char-info';
 import { CharSheet } from '@/src/models/char-sheet';
+import { CharInfo } from '@/src/models/sheet/char-info';
 import { CharSpecs } from '@/src/models/sheet/char-specs';
-import { SpellModel } from '@/src/models/sheet/char-spells';
+import { toggleSpell } from '../services/spell-service';
+import SpellModel from '../models/sheet/spells/spell-model';
+import { fetchSpell, fetchSpells } from '../repositories/spells-repository';
 import { baseSheet } from './baseValues/baseSheet';
 
 interface SheetStore {
   sheet: CharSheet;
+  getSheet: () => CharSheet;
   clearSheet: () => void;
   updateSheetInfo: (newSheetInfo: CharInfo) => void;
   updateSheetSpecs: (newSheetSpecs: CharSpecs) => void;
-  persistSheet: (newSheet: CharSheet) => void;
-  getSheet: () => CharSheet;
-  selectSpell: (spellIndex: string) => void;
-  deselectSpell: (spellIndex: string) => void;
+  toggleSpell: (spellIndex: string) => void;
   fetchSpell: (spellIndex: string) => Promise<SpellModel>;
   fetchSpells: (charClass: string) => void;
 }
-
-type fetchSpellsResponse = { level: number; name: string; index: string };
 
 export const useSheetStore = create<SheetStore>()(
   persist(
     immer((set, get) => ({
       sheet: baseSheet,
+
+      getSheet: (): CharSheet => {
+        return get().sheet;
+      },
 
       clearSheet: () => {
         set({ sheet: baseSheet });
@@ -48,98 +49,32 @@ export const useSheetStore = create<SheetStore>()(
         });
       },
 
-      persistSheet: (newSheet: CharSheet) => {
-        set({ sheet: newSheet });
+      fetchSpells: async (charClass: string) => {
+        const response = await fetchSpells(charClass);
 
-        toast.info('Char Sheet updated');
-      },
-
-      getSheet: (): CharSheet => {
-        return get().sheet;
-      },
-
-      fetchSpells: (charClass: string) => {
-        axios.get(`https://www.dnd5eapi.co/api/classes/${charClass}/spells`).then((res) => {
-          const spellsRes = res.data.results;
-
-          set((state) => {
-            state.sheet.spells!.classSpells = spellsRes.map((spell: fetchSpellsResponse) => ({
-              level: spell.level,
-              name: spell.name,
-              index: spell.index,
-            }));
-          });
-        });
-      },
-
-      selectSpell: (spellIndex: string) => {
         set((state) => {
-          const selectedSpell = state.sheet.spells?.classSpells.find(
-            (spell) => spell.index === spellIndex,
-          );
-
-          if (selectedSpell) {
-            state.sheet.spells?.selectedSpells?.push(selectedSpell);
-
-            selectedSpell.isSelected = true;
-            toast.success(`Spell [${selectedSpell.name}] selected!`);
-          } else {
-            toast.error('Selected Spell not found!');
-          }
+          state.sheet.spells!.classSpells = response;
         });
       },
 
-      deselectSpell: (spellIndex: string) => {
+      fetchSpell: async (spellIndex: string): Promise<SpellModel> => {
+        const response = await fetchSpell(spellIndex);
+        return response;
+      },
+
+      toggleSpell: (spellIndex: string) => {
         set((state) => {
-          const deselectedSpellIndex = state.sheet.spells?.selectedSpells?.findIndex(
-            (spell) => spell.index === spellIndex,
-          );
-          const deselectedClassSpell = state.sheet.spells?.classSpells.find(
-            (spell) => spell.index === spellIndex,
-          );
+          const result = toggleSpell(state.sheet.spells ?? {}, spellIndex);
 
-          if (deselectedSpellIndex !== -1 && deselectedClassSpell) {
-            const [deselectedSpell] = state.sheet.spells!.selectedSpells!.splice(
-              deselectedSpellIndex!,
-              1,
-            );
+          if (!result.shouldUpdate) return {};
 
-            deselectedClassSpell.isSelected = false;
-            toast.warning(`Spell [${deselectedSpell.name}] deselected!`);
-          } else {
-            toast.error('Spell not found!');
-          }
+          return {
+            sheet: {
+              ...state.sheet,
+              spells: result.updatedSpells,
+            },
+          };
         });
-      },
-
-      fetchSpell: async (spellIndex: string) => {
-        const res = await axios.get(`https://www.dnd5eapi.co/api/spells/${spellIndex}`);
-        return {
-          desc: res.data.desc.join(' '),
-          name: res.data.name,
-          index: res.data.index,
-          level: res.data.level,
-          components: res.data.components.join(', '),
-          concentration: res.data.concentration,
-          damage: res.data.damage
-            ? {
-                damageByLevel: res.data.damage.damage_at_character_level
-                  ? Object.entries(res.data.damage.damage_at_character_level).map(
-                      ([level, value]) => ({
-                        level: Number(level),
-                        value,
-                      }),
-                    )
-                  : [],
-                damageType: res.data.damage.damage_type.name,
-              }
-            : undefined,
-          duration: res.data.duration,
-          higherLevel: res.data.higher_level.join(),
-          material: res.data.material || '',
-          range: res.data.range,
-          ritual: res.data.ritual,
-        } as SpellModel;
       },
     })),
     {
