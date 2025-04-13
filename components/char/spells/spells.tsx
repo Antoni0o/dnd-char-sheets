@@ -19,7 +19,7 @@ type CharSpellsProps = {
   dndClass: string;
 };
 
-export function CharSpells({ dndClass }: CharSpellsProps) {
+export const CharSpells = React.memo(function CharSpells({ dndClass }: CharSpellsProps) {
   const [isSpellLoading, setIsSpellLoading] = useState<boolean>(true);
   const { sheet, fetchSpells } = useSheetStore();
 
@@ -73,4 +73,4 @@ export function CharSpells({ dndClass }: CharSpellsProps) {
       </Drawer>
     </section>
   );
-}
+});
