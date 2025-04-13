@@ -10,4 +10,5 @@ export const baseClasses: Array<CharClass> = [
   new CharClass('cleric', true, defaultProficiencyByLevel),
   new CharClass('barbarian', false, defaultProficiencyByLevel),
   new CharClass('paladin', true, defaultProficiencyByLevel),
+  new CharClass('rogue', false, defaultProficiencyByLevel),
 ];
