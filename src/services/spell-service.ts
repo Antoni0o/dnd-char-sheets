@@ -19,6 +19,7 @@ export function toggleSpell(spells: CharSpellsModel, spellIndex: string) {
     newSelectedSpells.splice(selectedIndex, 1);
     toast.warning(`Spell [${spellToToggle.name}] deselected!`);
   } else {
+    spellToToggle.isSelected = true;
     newSelectedSpells.push(spellToToggle);
     toast.success(`Spell [${spellToToggle.name}] selected!`);
   }

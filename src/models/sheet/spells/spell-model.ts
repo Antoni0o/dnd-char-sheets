@@ -14,5 +14,6 @@ export default class SpellModel {
     public material?: string,
     public range?: string,
     public ritual?: boolean,
+    public isSelected?: boolean,
   ) {}
 }

@@ -1,21 +1,19 @@
 'use client';
 
 import { useSheetStore } from '@/src/store/sheet-store';
+import { Book } from 'lucide-react';
+import React, { useState } from 'react';
+import { Loading } from '../../commons/loading';
+import { Button } from '../../ui/button';
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '../../ui/drawer';
-import { Button } from '../../ui/button';
-import { Book } from 'lucide-react';
 import { Spell } from './spell';
-import React, { useState } from 'react';
-import { Loading } from '../../commons/loading';
 
 type CharSpellsProps = {
   dndClass: string;
@@ -64,18 +62,13 @@ export function CharSpells({ dndClass }: CharSpellsProps) {
           </DrawerHeader>
           <section className="flex max-h-[100rem] w-full flex-col gap-4 overflow-x-hidden overflow-y-scroll p-4">
             {!isSpellLoading ? (
-              sheet.spells?.classSpells.map((spell) => {
+              sheet.spells?.classSpells?.map((spell) => {
                 return <Spell key={spell.index} spell={spell} isSelectable />;
               })
             ) : (
               <Loading message={`${dndClass} spells is loading`} />
             )}
           </section>
-          <DrawerFooter>
-            <DrawerClose asChild>
-              <Button variant="outline">Close</Button>
-            </DrawerClose>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </section>

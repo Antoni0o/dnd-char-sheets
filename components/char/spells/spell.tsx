@@ -1,4 +1,3 @@
-import { SpellModel } from '@/src/models/sheet/char-spells';
 import { Button } from '../../ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
 import { useSheetStore } from '@/src/store/sheet-store';
@@ -14,6 +13,8 @@ import {
   DialogTrigger,
 } from '../../ui/dialog';
 import { Trash } from 'lucide-react';
+import { DamageByLevel } from '@/src/models/sheet/spells/spell-damage-models';
+import SpellModel from '@/src/models/sheet/spells/spell-model';
 
 type SpellProps = {
   spell: SpellModel;
@@ -21,7 +22,7 @@ type SpellProps = {
 };
 
 export const Spell = React.memo(function SpellDetails({ spell, isSelectable = false }: SpellProps) {
-  const { fetchSpell, selectSpell, deselectSpell } = useSheetStore();
+  const { fetchSpell, toggleSpell } = useSheetStore();
   const [isSpellLoading, setIsSpellLoading] = useState<boolean>(true);
   const [selectedSpell, setSelectedSpell] = useState<SpellModel>();
 
@@ -77,7 +78,7 @@ export const Spell = React.memo(function SpellDetails({ spell, isSelectable = fa
               <div className="flex flex-col">
                 <Label className="text-md">Damage/Level:</Label>
                 {selectedSpell?.damage && damageByLevel.length && damageByLevel.length > 0 ? (
-                  damageByLevel.map((damage) => {
+                  damageByLevel.map((damage: DamageByLevel) => {
                     return (
                       <div key={damage.level}>
                         <b>Level {damage.level}: </b>
@@ -126,11 +127,11 @@ export const Spell = React.memo(function SpellDetails({ spell, isSelectable = fa
         </PopoverContent>
       </Popover>
       {isSelectable ? (
-        <Button size="sm" disabled={spell.isSelected} onClick={() => selectSpell(spell.index)}>
+        <Button size="sm" disabled={spell.isSelected} onClick={() => toggleSpell(spell.index)}>
           Select
         </Button>
       ) : (
-        <Button variant="destructive" size="sm" onClick={() => deselectSpell(spell.index)}>
+        <Button variant="destructive" size="sm" onClick={() => toggleSpell(spell.index)}>
           <Trash />
         </Button>
       )}
