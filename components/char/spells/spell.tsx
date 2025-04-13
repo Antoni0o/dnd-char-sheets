@@ -1,10 +1,10 @@
-import { Spell } from '@/src/models/sheet/char-spells';
-import { Button } from '../ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { SpellModel } from '@/src/models/sheet/char-spells';
+import { Button } from '../../ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
 import { useSheetStore } from '@/src/store/sheet-store';
-import { useState } from 'react';
-import { Loading } from './loading';
-import { Label } from '../ui/label';
+import React, { useState } from 'react';
+import { Loading } from '../../commons/loading';
+import { Label } from '../../ui/label';
 import {
   Dialog,
   DialogContent,
@@ -12,20 +12,24 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog';
+} from '../../ui/dialog';
 import { Trash } from 'lucide-react';
 
-type SpellDetailsProps = {
-  spell: Spell;
+type SpellProps = {
+  spell: SpellModel;
   isSelectable?: boolean;
 };
 
-export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps) {
+export const Spell = React.memo(function SpellDetails({ spell, isSelectable = false }: SpellProps) {
   const { fetchSpell, selectSpell, deselectSpell } = useSheetStore();
   const [isSpellLoading, setIsSpellLoading] = useState<boolean>(true);
-  const [selectedSpell, setSelectedSpell] = useState<Spell>();
+  const [selectedSpell, setSelectedSpell] = useState<SpellModel>();
+
+  const damageByLevel = selectedSpell?.damage?.damageByLevel ?? [];
 
   async function handleFetchSpell() {
+    if (selectedSpell) return;
+
     setIsSpellLoading(true);
     try {
       const fetchedSpell = await fetchSpell(spell.index);
@@ -33,9 +37,7 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
     } catch (error) {
       console.error('Failed to fetch spell:', error);
     } finally {
-      setTimeout(() => {
-        setIsSpellLoading(false);
-      }, 1000);
+      setIsSpellLoading(false);
     }
   }
 
@@ -47,14 +49,16 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
             variant="outline"
             size="sm"
             className="flex w-6/8 justify-start"
-            onClick={async () => await handleFetchSpell()}
+            onClick={() => handleFetchSpell()}
           >
             <div className="mr-2 flex items-center gap-2">
               <Label className="text-md">Level: </Label>
               <span>{spell.level}</span>
             </div>
             <span className="mr-2 font-normal">|</span>
-            <span className="w-[40%] truncate text-start">{spell.name}</span>
+            <span className="w-[40%] truncate text-start" title={spell.name}>
+              {spell.name}
+            </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-80 overflow-auto">
@@ -72,10 +76,8 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
               </div>
               <div className="flex flex-col">
                 <Label className="text-md">Damage/Level:</Label>
-                {selectedSpell?.damage &&
-                selectedSpell?.damage?.damageByLevel.length &&
-                selectedSpell?.damage?.damageByLevel.length > 0 ? (
-                  selectedSpell?.damage?.damageByLevel.map((damage) => {
+                {selectedSpell?.damage && damageByLevel.length && damageByLevel.length > 0 ? (
+                  damageByLevel.map((damage) => {
                     return (
                       <div key={damage.level}>
                         <b>Level {damage.level}: </b>
@@ -134,4 +136,4 @@ export function SpellDetails({ spell, isSelectable = false }: SpellDetailsProps)
       )}
     </div>
   );
-}
+});

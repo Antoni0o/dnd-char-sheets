@@ -2,7 +2,7 @@
 
 import { ClassSelector } from '@/components/class-selector';
 import { useSheetStore } from '@/src/store/sheet-store';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 export default function Home() {
   const { getSheet } = useSheetStore();

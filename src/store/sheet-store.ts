@@ -7,18 +7,19 @@ import axios from 'axios';
 import { CharInfo } from '@/src/models/sheet/char-info';
 import { CharSheet } from '@/src/models/char-sheet';
 import { CharSpecs } from '@/src/models/sheet/char-specs';
-import { Spell } from '@/src/models/sheet/char-spells';
-import { baseAttributes } from '@/src/store/baseValues/baseAttributes';
+import { SpellModel } from '@/src/models/sheet/char-spells';
+import { baseSheet } from './baseValues/baseSheet';
 
 interface SheetStore {
   sheet: CharSheet;
+  clearSheet: () => void;
   updateSheetInfo: (newSheetInfo: CharInfo) => void;
   updateSheetSpecs: (newSheetSpecs: CharSpecs) => void;
   persistSheet: (newSheet: CharSheet) => void;
   getSheet: () => CharSheet;
   selectSpell: (spellIndex: string) => void;
   deselectSpell: (spellIndex: string) => void;
-  fetchSpell: (spellIndex: string) => Promise<Spell>;
+  fetchSpell: (spellIndex: string) => Promise<SpellModel>;
   fetchSpells: (charClass: string) => void;
 }
 
@@ -27,29 +28,12 @@ type fetchSpellsResponse = { level: number; name: string; index: string };
 export const useSheetStore = create<SheetStore>()(
   persist(
     immer((set, get) => ({
-      sheet: <CharSheet>{
-        info: {
-          name: '',
-          age: 0,
-          height: 0,
-          weight: 0,
-          history: '',
-          race: '',
-          antecedent: '',
-          trend: '',
-        },
-        specs: {
-          level: 0,
-          ca: 0,
-          hp: 0,
-          proficiency: 0,
-          attributes: baseAttributes,
-        },
-        spells: {
-          spellLevels: [],
-          classSpells: [],
-          selectedSpells: [],
-        },
+      sheet: baseSheet,
+
+      clearSheet: () => {
+        set({ sheet: baseSheet });
+
+        toast.success('Char Sheet cleared!');
       },
 
       updateSheetInfo: (newInfo: CharInfo) => {
@@ -66,6 +50,7 @@ export const useSheetStore = create<SheetStore>()(
 
       persistSheet: (newSheet: CharSheet) => {
         set({ sheet: newSheet });
+
         toast.info('Char Sheet updated');
       },
 
@@ -154,7 +139,7 @@ export const useSheetStore = create<SheetStore>()(
           material: res.data.material || '',
           range: res.data.range,
           ritual: res.data.ritual,
-        } as Spell;
+        } as SpellModel;
       },
     })),
     {

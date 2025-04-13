@@ -5,16 +5,17 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from './ui/drawer';
-import { Button } from './ui/button';
+} from '../../ui/drawer';
+import { Button } from '../../ui/button';
 import { Book } from 'lucide-react';
-import { SpellDetails } from './commons/spell-details';
-import { useState } from 'react';
-import { Loading } from './commons/loading';
+import { Spell } from './spell';
+import React, { useState } from 'react';
+import { Loading } from '../../commons/loading';
 
 type CharSpellsProps = {
   dndClass: string;
@@ -30,10 +31,10 @@ export function CharSpells({ dndClass }: CharSpellsProps) {
 
       {sheet.spells?.selectedSpells && sheet.spells!.selectedSpells!.length > 0 ? (
         sheet.spells?.selectedSpells!.map((spellOfSpellList) => {
-          return <SpellDetails key={spellOfSpellList.index} spell={spellOfSpellList} />;
+          return <Spell key={spellOfSpellList.index} spell={spellOfSpellList} />;
         })
       ) : (
-        <>No Spell selected.</>
+        <span className="mb-2 font-bold italic">No Spell selected.</span>
       )}
 
       <Drawer>
@@ -56,11 +57,15 @@ export function CharSpells({ dndClass }: CharSpellsProps) {
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle className="text-2xl capitalize">{dndClass} Spells</DrawerTitle>
+            <DrawerDescription className="text-sm">
+              Here you can select your character&apos;s spells. Click on a spell to view its details
+              and select it. You can also deselect spells you no longer want.
+            </DrawerDescription>
           </DrawerHeader>
           <section className="flex max-h-[100rem] w-full flex-col gap-4 overflow-x-hidden overflow-y-scroll p-4">
             {!isSpellLoading ? (
               sheet.spells?.classSpells.map((spell) => {
-                return <SpellDetails key={spell.index} spell={spell} isSelectable />;
+                return <Spell key={spell.index} spell={spell} isSelectable />;
               })
             ) : (
               <Loading message={`${dndClass} spells is loading`} />

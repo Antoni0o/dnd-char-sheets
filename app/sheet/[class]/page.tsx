@@ -1,13 +1,13 @@
 'use client';
 
-import { CharInfo } from '@/components/char-info';
-import { CharSpecs } from '@/components/char-specs';
-import { CharSpells } from '@/components/char-spells';
+import { CharInfo } from '@/components/char/info';
+import { CharSpecs } from '@/components/char/specs/specs';
+import { CharSpells } from '@/components/char/spells/spells';
 import { Loading } from '@/components/commons/loading';
 import { Separator } from '@/components/ui/separator';
 import CharClass from '@/src/models/char-class';
 import { useClassStore } from '@/src/store/class-store';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Class() {
   const { charClass: storeCharClass } = useClassStore();

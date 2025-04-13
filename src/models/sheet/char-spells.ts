@@ -1,7 +1,7 @@
 export type CharSpells = {
   spellLevels: Array<SpellLevel>;
-  selectedSpells?: Array<Spell>;
-  classSpells: Array<Spell>;
+  selectedSpells?: Array<SpellModel>;
+  classSpells: Array<SpellModel>;
 };
 
 export type SpellLevel = {
@@ -12,10 +12,10 @@ export type SpellLevel = {
 
 export type Slot = {
   isUsed: boolean;
-  selectedSpell?: Spell;
+  selectedSpell?: SpellModel;
 };
 
-export type Spell = {
+export type SpellModel = {
   index: string;
   name: string;
   level: number;

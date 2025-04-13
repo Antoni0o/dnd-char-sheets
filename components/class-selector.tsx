@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { baseClasses } from '@/src/store/baseValues/baseClasses';
 import { useClassStore } from '@/src/store/class-store';
@@ -16,14 +16,21 @@ export function ClassSelector() {
   const router = useRouter();
 
   const createSheet = () => {
-    if (dndClass) {
-      const selectedClass = baseClasses.find((cls) => cls.name === dndClass);
-      if (selectedClass) {
-        setCharClass(dndClass);
-        router.push(`/sheet/${dndClass}`);
-      }
-    } else toast.error('Class is not selected!');
+    if (!dndClass) {
+      toast.error('Class is not selected!');
+      return;
+    }
+
+    const selectedClass = baseClasses.find((cls) => cls.name === dndClass);
+    if (selectedClass) {
+      setCharClass(dndClass);
+      router.push(`/sheet/${dndClass}`);
+    }
   };
+
+  function capitalize(text: string) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
 
   return (
     <section className="flex flex-col gap-4">
@@ -35,18 +42,14 @@ export function ClassSelector() {
         <SelectContent>
           {baseClasses.map((charClass) => {
             return (
-              <SelectItem
-                className="cursor-pointer capitalize"
-                key={charClass.name}
-                value={charClass.name}
-              >
-                {charClass.name}
+              <SelectItem className="cursor-pointer" key={charClass.name} value={charClass.name}>
+                {capitalize(charClass.name)}
               </SelectItem>
             );
           })}
         </SelectContent>
       </Select>
-      <Button className="cursor-pointer" onClick={() => createSheet()}>
+      <Button aria-label="Create character sheet" onClick={() => createSheet()}>
         Create Sheet
       </Button>
     </section>

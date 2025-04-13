@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -12,24 +13,37 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Separator } from './ui/separator';
+import { Separator } from '../ui/separator';
 import { Book } from 'lucide-react';
 import { useSheetStore } from '@/src/store/sheet-store';
 
 export function CharInfo() {
   const { sheet, updateSheetInfo } = useSheetStore();
   const [charInfo, setCharInfo] = useState(sheet.info);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const handleChange = (key: keyof typeof charInfo, value: string | number) => {
+  const handleChange = useCallback((key: keyof typeof charInfo, value: string | number) => {
     setCharInfo((prev) => ({ ...prev, [key]: value }));
-  };
+  }, []);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      updateSheetInfo(charInfo);
-    }, 2000);
+    setCharInfo(sheet.info);
+  }, [sheet.info]);
 
-    return () => clearTimeout(timeout);
+  useEffect(() => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      updateSheetInfo(charInfo);
+    }, 1000);
+
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+    };
   }, [charInfo, updateSheetInfo]);
 
   return (
@@ -49,6 +63,10 @@ export function CharInfo() {
           <DrawerContent>
             <DrawerHeader>
               <DrawerTitle className="text-2xl">Character Info</DrawerTitle>
+              <DrawerDescription className="text-sm">
+                Here you can edit the character&apos;s information, such as name, age, height,
+                weight...
+              </DrawerDescription>
             </DrawerHeader>
 
             <section className="flex flex-col gap-2 overflow-y-auto p-4">
@@ -69,7 +87,10 @@ export function CharInfo() {
                     className="number-input-sm"
                     value={charInfo.age}
                     type="number"
-                    onChange={(e) => handleChange('age', Number(e.target.value))}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      handleChange('age', value === '' ? '' : Number(value));
+                    }}
                   />
                 </div>
                 <div className="flex flex-col items-end gap-2">
@@ -78,7 +99,10 @@ export function CharInfo() {
                     className="number-input-sm"
                     value={charInfo.height}
                     type="number"
-                    onChange={(e) => handleChange('height', Number(e.target.value))}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      handleChange('height', value === '' ? '' : Number(value));
+                    }}
                   />
                 </div>
                 <div className="flex flex-col items-end gap-2">
@@ -87,7 +111,10 @@ export function CharInfo() {
                     className="number-input-sm"
                     value={charInfo.weight}
                     type="number"
-                    onChange={(e) => handleChange('weight', Number(e.target.value))}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      handleChange('weight', value === '' ? '' : Number(value));
+                    }}
                   />
                 </div>
               </section>
