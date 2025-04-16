@@ -19,10 +19,10 @@ import { Spell } from './spell';
 import SpellModel from '@/src/models/sheet/spells/spell-model';
 
 type CharSpellsProps = {
-  dndClass: string;
+  charClass: string;
 };
 
-export function Spells({ dndClass }: CharSpellsProps) {
+export function Spells({ charClass: charClass }: CharSpellsProps) {
   const [visibleSpells, setVisibleSpells] = useState<SpellModel[]>([]);
   const [loadedCount, setLoadedCount] = useState(50);
   const [isSpellLoading, setIsSpellLoading] = useState<boolean>(false);
@@ -33,7 +33,7 @@ export function Spells({ dndClass }: CharSpellsProps) {
       if (!sheet.spells?.classSpells || sheet.spells.classSpells.length === 0) {
         setIsSpellLoading(true);
         try {
-          await fetchSpells(dndClass);
+          await fetchSpells(charClass);
         } finally {
           setIsSpellLoading(false);
         }
@@ -41,7 +41,7 @@ export function Spells({ dndClass }: CharSpellsProps) {
     };
 
     loadSpells();
-  }, [dndClass, fetchSpells, sheet.spells?.classSpells]);
+  }, [charClass, fetchSpells, sheet.spells?.classSpells]);
 
   useEffect(() => {
     if (sheet.spells?.classSpells) {
@@ -97,7 +97,7 @@ export function Spells({ dndClass }: CharSpellsProps) {
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle className="text-2xl capitalize">{dndClass} Spells</DrawerTitle>
+            <DrawerTitle className="text-2xl capitalize">{charClass} Spells</DrawerTitle>
             <DrawerDescription className="text-sm">
               Here you can select your character&apos;s spells. Click on a spell to view its details
               and select it. You can also deselect spells you no longer want.
@@ -123,7 +123,7 @@ export function Spells({ dndClass }: CharSpellsProps) {
                 )}
               </List>
             ) : (
-              <Loading message={`${dndClass} spells is loading`} />
+              <Loading message={`${charClass} spells is loading`} />
             )}
           </section>
         </DrawerContent>

@@ -71,7 +71,7 @@ export const useSheetStore = create<SheetStore>()(
       },
     })),
     {
-      name: 'DnD:Sheet',
+      name: 'Grimoria:Sheet',
       storage: createJSONStorage(() => localStorage),
     },
   ),

@@ -10,21 +10,21 @@ import { baseClasses } from '@/src/store/baseValues/baseClasses';
 import { useClassStore } from '@/src/store/class-store';
 
 export function ClassSelector() {
-  const [dndClass, setDnDClass] = useState('');
+  const [charClass, setStateClass] = useState('');
   const { setCharClass } = useClassStore();
 
   const router = useRouter();
 
   const createSheet = () => {
-    if (!dndClass) {
+    if (!charClass) {
       toast.error('Class is not selected!');
       return;
     }
 
-    const selectedClass = baseClasses.find((cls) => cls.name === dndClass);
+    const selectedClass = baseClasses.find((cls) => cls.name === charClass);
     if (selectedClass) {
-      setCharClass(dndClass);
-      router.push(`/sheet/${dndClass}`);
+      setCharClass(charClass);
+      router.push(`/sheet/${charClass}`);
     }
   };
 
@@ -35,7 +35,7 @@ export function ClassSelector() {
   return (
     <section className="flex flex-col gap-4">
       <Label className="text-2xl">Select your class:</Label>
-      <Select value={dndClass} onValueChange={setDnDClass}>
+      <Select value={charClass} onValueChange={setStateClass}>
         <SelectTrigger className="w-full cursor-pointer">
           <SelectValue placeholder="Class"></SelectValue>
         </SelectTrigger>

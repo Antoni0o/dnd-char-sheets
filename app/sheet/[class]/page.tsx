@@ -33,7 +33,7 @@ export default function Class() {
           <Separator></Separator>
           <section className="flex flex-col gap-4">
             <Specs></Specs>
-            {charClass.canUseSpells && <Spells dndClass={charClass.name}></Spells>}
+            {charClass.canUseSpells && <Spells charClass={charClass.name}></Spells>}
           </section>
         </main>
       ) : (

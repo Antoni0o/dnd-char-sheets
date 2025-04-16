@@ -1,24 +1,27 @@
 'use client';
 
 import { ThemeSwitch } from './commons/theme-switch';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 import { ClearSheet } from './commons/clear-sheet';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export function NavBar() {
-  const router = useRouter();
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center justify-between border-b-2 p-4">
-      <h1
-        className="text-2xl font-bold"
-        onClick={() => {
-          router.push('/');
-        }}
-      >
+    <nav className="flex items-center justify-between border-b-2 px-4 py-2">
+      <Link className="flex items-center gap-2 text-2xl font-bold" href="/">
+        <Image
+          src="/grimora-logo-branco.png"
+          width={48}
+          height={48}
+          alt="Logo Grimora"
+          className="rounded-lg"
+        ></Image>
         Grimora
-      </h1>
+      </Link>
 
       <div className="flex items-center gap-4">
         <ThemeSwitch></ThemeSwitch>

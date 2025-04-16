@@ -22,7 +22,7 @@ export const useClassStore = create<ClassStore>()(
       },
     })),
     {
-      name: 'DnD:Class',
+      name: 'Grimoria:Class',
       storage: createJSONStorage(() => localStorage),
     },
   ),
