@@ -1,6 +1,6 @@
 {
-  "name": "dnd-char-sheets",
-  "version": "0.9.3",
+  "name": "grimora",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
