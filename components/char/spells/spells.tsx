@@ -24,7 +24,7 @@ type CharSpellsProps = {
 
 export function Spells({ dndClass }: CharSpellsProps) {
   const [visibleSpells, setVisibleSpells] = useState<SpellModel[]>([]);
-  const [loadedCount, setLoadedCount] = useState(20);
+  const [loadedCount, setLoadedCount] = useState(50);
   const [isSpellLoading, setIsSpellLoading] = useState<boolean>(false);
   const { sheet, fetchSpells } = useSheetStore();
 
@@ -66,9 +66,9 @@ export function Spells({ dndClass }: CharSpellsProps) {
 
       if (scrollUpdateWasRequested) return;
 
-      const containerHeight = 600;
-      const totalContentHeight = visibleSpells.length * 100;
-      const tolerance = 50;
+      const containerHeight = 300;
+      const totalContentHeight = visibleSpells.length * 60;
+      const tolerance = 60;
 
       const isNearBottom = scrollOffset + containerHeight >= totalContentHeight - tolerance;
 
@@ -106,7 +106,7 @@ export function Spells({ dndClass }: CharSpellsProps) {
           <section className="flex max-h-[100rem] w-full flex-col p-4">
             {!isSpellLoading ? (
               <List
-                height={600}
+                height={300}
                 itemCount={visibleSpells.length}
                 itemSize={60}
                 width="100%"
