@@ -1,8 +1,8 @@
 'use client';
 
-import { CharInfo } from '@/components/char/info';
-import { CharSpecs } from '@/components/char/specs/specs';
-import { CharSpells } from '@/components/char/spells/spells';
+import { Info } from '@/components/char/info';
+import { Specs } from '@/components/char/specs/specs';
+import { Spells } from '@/components/char/spells/spells';
 import { Loading } from '@/components/commons/loading';
 import { Separator } from '@/components/ui/separator';
 import CharClass from '@/src/models/char-class';
@@ -28,12 +28,12 @@ export default function Class() {
         <main className="flex flex-col gap-4">
           <header>
             <h1 className="text-3xl font-bold capitalize">Class: {charClass.name}</h1>
-            <CharInfo></CharInfo>
+            <Info></Info>
           </header>
           <Separator></Separator>
           <section className="flex flex-col gap-4">
-            <CharSpecs></CharSpecs>
-            {charClass.canUseSpells && <CharSpells dndClass={charClass.name}></CharSpells>}
+            <Specs></Specs>
+            {charClass.canUseSpells && <Spells dndClass={charClass.name}></Spells>}
           </section>
         </main>
       ) : (

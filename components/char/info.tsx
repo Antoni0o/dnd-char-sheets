@@ -17,7 +17,7 @@ import { Separator } from '../ui/separator';
 import { Book } from 'lucide-react';
 import { useSheetStore } from '@/src/store/sheet-store';
 
-export function CharInfo() {
+export function Info() {
   const { sheet, updateSheetInfo } = useSheetStore();
   const [charInfo, setCharInfo] = useState(sheet.info);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);

@@ -1,9 +1,9 @@
-import { CharInfo } from './sheet/char-info';
-import { CharSpecs } from './sheet/char-specs';
-import CharSpellsModel from './sheet/char-spells';
+import InfoModel from './sheet/info/info-model';
+import { SpecsModel } from './sheet/specs/specs-model';
+import SpellsModel from './sheet/spells/spells-model';
 
-export type CharSheet = {
-  info: CharInfo;
-  specs: CharSpecs;
-  spells?: CharSpellsModel;
-};
+export interface CharSheet {
+  info: InfoModel;
+  specs: SpecsModel;
+  spells?: SpellsModel;
+}

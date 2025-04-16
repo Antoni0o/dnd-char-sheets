@@ -1,7 +1,7 @@
-import { CharSpecs } from '@/src/models/sheet/char-specs';
+import { SpecsModel } from '@/src/models/sheet/specs/specs-model';
 
 export const handleChange = (
-  prevState: CharSpecs,
+  prevState: SpecsModel,
   updatedValue: number,
   field: string,
   attributeType?: string,

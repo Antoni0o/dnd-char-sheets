@@ -15,15 +15,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CircleDashed, CircleDotDashed, ScrollText } from 'lucide-react';
-import type { CharSpecs } from '@/src/models/sheet/char-specs';
+import type { SpecsModel } from '@/src/models/sheet/specs/specs-model';
 import { handleChange } from './handleChange';
 
 type SpecsDetailsProps = {
-  charSpecs: CharSpecs;
-  setCharSpecs: React.Dispatch<React.SetStateAction<CharSpecs>>;
+  specs: SpecsModel;
+  setSpecs: React.Dispatch<React.SetStateAction<SpecsModel>>;
 };
 
-export function SpecsDetails({ charSpecs, setCharSpecs }: SpecsDetailsProps) {
+export function SpecsDetails({ specs: charSpecs, setSpecs: setCharSpecs }: SpecsDetailsProps) {
   return (
     <Drawer>
       <DrawerTrigger asChild>

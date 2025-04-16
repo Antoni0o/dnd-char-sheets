@@ -1,4 +1,4 @@
-export type CharInfo = {
+export default interface InfoModel {
   name: string;
   age: number;
   height: number;
@@ -7,4 +7,4 @@ export type CharInfo = {
   antecedent: string;
   trend: string;
   history: string;
-};
+}

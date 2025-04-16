@@ -1,7 +1,7 @@
 import { toast } from 'sonner';
-import CharSpellsModel from '../models/sheet/char-spells';
+import SpellsModel from '../models/sheet/spells/spells-model';
 
-export function toggleSpell(spells: CharSpellsModel, spellIndex: string) {
+export function toggleSpell(spells: SpellsModel, spellIndex: string) {
   const spellToToggle = spells.classSpells?.find((spell) => spell.index === spellIndex);
 
   if (!spellToToggle) {

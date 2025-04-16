@@ -3,20 +3,20 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import type { CharSpecs } from '@/src/models/sheet/char-specs';
+import type { SpecsModel } from '@/src/models/sheet/specs/specs-model';
 import { useClassStore } from '@/src/store/class-store';
 import { useSheetStore } from '@/src/store/sheet-store';
 import React, { useEffect, useRef, useState } from 'react';
 import { SpecsDetails } from './details-drawer';
 
-export function CharSpecs() {
+export function Specs() {
   const { sheet, updateSheetSpecs } = useSheetStore();
   const { charClass } = useClassStore();
-  const [charSpecs, setCharSpecs] = useState<CharSpecs>(sheet.specs);
+  const [specs, setSpecs] = useState<SpecsModel>(sheet.specs);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    setCharSpecs(sheet.specs);
+    setSpecs(sheet.specs);
   }, [sheet.specs]);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export function CharSpecs() {
     }
 
     debounceTimer.current = setTimeout(() => {
-      updateSheetSpecs(charSpecs);
+      updateSheetSpecs(specs);
     }, 1000);
 
     return () => {
@@ -33,7 +33,7 @@ export function CharSpecs() {
         clearTimeout(debounceTimer.current);
       }
     };
-  }, [charSpecs, updateSheetSpecs]);
+  }, [specs, updateSheetSpecs]);
 
   return (
     <section className="rounded-lg border-2 p-4">
@@ -45,7 +45,7 @@ export function CharSpecs() {
               <Input
                 className="number-input-md"
                 type="number"
-                value={charSpecs.level}
+                value={specs.level}
                 onChange={(e) => {
                   const newLevel = Number(e.target.value);
 
@@ -56,7 +56,7 @@ export function CharSpecs() {
                         ? charClass!.proficiencyByLevel[19]
                         : 0;
 
-                  setCharSpecs((prev) => ({
+                  setSpecs((prev) => ({
                     ...prev,
                     level: newLevel,
                     proficiency: newProficiency,
@@ -67,9 +67,7 @@ export function CharSpecs() {
 
             <div className="flex flex-col items-start justify-end gap-2">
               <Label>Proficiency</Label>
-              <span className="w-full border-b-2 text-right font-bold">
-                {charSpecs.proficiency}
-              </span>
+              <span className="w-full border-b-2 text-right font-bold">{specs.proficiency}</span>
             </div>
           </div>
 
@@ -81,8 +79,8 @@ export function CharSpecs() {
               <Input
                 className="number-input-sm"
                 type="number"
-                value={charSpecs.ca}
-                onChange={(e) => setCharSpecs({ ...charSpecs, ca: Number(e.target.value) })}
+                value={specs.ca}
+                onChange={(e) => setSpecs({ ...specs, ca: Number(e.target.value) })}
               ></Input>
             </div>
             <div className="flex flex-col items-end gap-2">
@@ -90,12 +88,12 @@ export function CharSpecs() {
               <Input
                 className="number-input-sm"
                 type="number"
-                value={charSpecs.hp}
-                onChange={(e) => setCharSpecs({ ...charSpecs, hp: Number(e.target.value) })}
+                value={specs.hp}
+                onChange={(e) => setSpecs({ ...specs, hp: Number(e.target.value) })}
               ></Input>
             </div>
             <div className="flex w-full items-end">
-              <SpecsDetails charSpecs={charSpecs} setCharSpecs={setCharSpecs} />
+              <SpecsDetails specs={specs} setSpecs={setSpecs} />
             </div>
           </div>
         </div>
