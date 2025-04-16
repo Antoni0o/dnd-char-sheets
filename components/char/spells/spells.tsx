@@ -30,7 +30,7 @@ export function Spells({ dndClass }: CharSpellsProps) {
 
   useEffect(() => {
     const loadSpells = async () => {
-      if (!sheet.spells?.classSpells) {
+      if (!sheet.spells?.classSpells || sheet.spells.classSpells.length === 0) {
         setIsSpellLoading(true);
         try {
           await fetchSpells(dndClass);
