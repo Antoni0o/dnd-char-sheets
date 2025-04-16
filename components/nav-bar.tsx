@@ -17,7 +17,7 @@ export function NavBar() {
           router.push('/');
         }}
       >
-        DnD Char Sheets
+        Grimora
       </h1>
 
       <div className="flex items-center gap-4">
